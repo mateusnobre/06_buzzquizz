@@ -1,1 +1,1 @@
-# 06_buzzquizz
+# 06 BuzzQuizz
