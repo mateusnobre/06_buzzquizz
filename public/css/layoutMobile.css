@@ -1,3 +1,48 @@
-@media (max-width: 620px){
-    
+@media (max-width: 620px) {
+    .containerGeral {
+        width: 90%;
+        height: auto;
+        position: absolute;
+        top: 100px;
+    }
+    .faixa {
+        flex-direction: column;
+        margin-top: 0px;
+    }
+    .primeiro {
+        margin-left: 0;
+    }
+    .segundo {
+        margin-left: 0;
+    }
+    .terceiro {
+        margin-left: 0;
+    }
+    .item {
+        width: 100%;
+        height: auto;
+        margin-bottom: 15px;
+    }
+
+    .item h4{
+        bottom: 30px;
+    }
+
+    .seusQuizzes h2 {
+        margin-bottom: 15px;
+    }
+
+    .seusQuizzes ion-icon {
+        margin-bottom: 15px;
+    }
+
+    .todosQuizzes h2 {
+        margin-bottom: 15px;
+    }
+
+    .tituloSeusQuizzes {
+        width: 100%;
+        justify-content: space-between;
+    }
+
 }
