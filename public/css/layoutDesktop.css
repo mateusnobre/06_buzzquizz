@@ -236,15 +236,24 @@ body {
     padding: 20px 30px 35px 30px;
     background: #FFFFFF;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 50px;
 }
+
 
 .topoPergunta {
     width: 680px;
     height: 130px;
-    background: #434CA0;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.azul {
+    background: #434CA0;
+}
+
+.rosa{
+    background: #A0438D;
 }
 
 .faixaPergunta {
