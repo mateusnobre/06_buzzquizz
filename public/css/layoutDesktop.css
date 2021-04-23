@@ -7,6 +7,10 @@ body {
     background: #E5E5E5;
 }
 
+.off{
+    display: none;
+}
+
 .fundo {
     width: 100%;
     height: 100%;
