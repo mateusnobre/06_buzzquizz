@@ -1,21 +1,8 @@
 
-
-function carregarQuizzes() {
-    const requisicaoQuizzes = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes');
-    requisicaoQuizzes.then(quizzes);
-}
-
-
-
-function quizzes(resposta) {
-    console.log(resposta.data);
-}
-
-carregarQuizz1();
-
-function carregarQuizz1() {
-    const requisicaoQuizz = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes/1');
-    requisicaoQuizz.then(quizz1);
+function carregarQuizz(idQuizz) {
+    var endereco = "https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes/" + idQuizz;
+    const requisicaoQuizz = axios.get(endereco);
+    requisicaoQuizz.then(quizz);
 }
 
 var limitador = [];
@@ -27,7 +14,7 @@ let score = 0;
 
 var conteudoGlobal = [];
 
-function quizz1(resposta) {
+function quizz(resposta) {
     console.log(resposta.data);
 
     conteudoGlobal = resposta.data;
@@ -36,7 +23,6 @@ function quizz1(resposta) {
 
     resetar.innerHTML =
         `
-
         <div class="tela1 off">
             <div class="fundo">
                 <div class="containerGeral">
@@ -121,12 +107,16 @@ function quizz1(resposta) {
 
 
 
-    numeroPerguntas = resposta.data.questions.length;
+    numeroPerguntas = resposta.data.questions.length;                
+
 
     for (let j = 0; j < numeroPerguntas; j++) {
         limitador.push(0);
+        
+        let numeroAlternativas = resposta.data.questions[j].answers.length;
 
-        for (let k = 0; k < 4; k++) {
+
+        for (let k = 0; k < numeroAlternativas; k++) {
             if (resposta.data.questions[numeroPerguntas - 1 - j].answers[k].isCorrectAnswer == true) {
                 solucoes.push(k);
             }
@@ -134,49 +124,95 @@ function quizz1(resposta) {
 
     }
 
-        setTimeout(exibirPergunta, 500);
-  
+    setTimeout(exibirPergunta, 500);
+
 
 }
 
 let i = 0;
 
-function exibirPergunta(){
-
+function exibirPergunta() {
+    let contadorAlternativa = 0;
     var elemento = document.querySelector(".perguntas");
-        elemento.innerHTML += `
+    elemento.innerHTML += `
     <div class="pergunta">
-                    <div class="topoPergunta azul">
-                        <h3>${conteudoGlobal.questions[i].title}</h3>
-                    </div>
-                    <div class="faixaPergunta">
-                        <div class="alternativa q${i} a0">
-                            <img src="${conteudoGlobal.questions[i].answers[0].image}" onclick="escolherAlternativa(${i},0)">
-                            ${conteudoGlobal.questions[i].answers[0].text}
-                        </div>
-                        <div class="alternativa q${i} a1">
-                            <img src="${conteudoGlobal.questions[i].answers[1].image}" onclick="escolherAlternativa(${i},1)">
-                            ${conteudoGlobal.questions[i].answers[1].text}
-                        </div>
-                    </div>
+    <div class="topoPergunta azul">
+        <h3>${conteudoGlobal.questions[i].title}</h3>
+    </div>
+    </div>
+`;
 
-                    <div class="faixaPergunta">
-                        <div class="alternativa q${i} a2">
-                            <img src="${conteudoGlobal.questions[i].answers[2].image}" onclick="escolherAlternativa(${i},2)">
-                            ${conteudoGlobal.questions[i].answers[2].text}
-                        </div>
-                        <div class="alternativa q${i} a3">
-                            <img src="${conteudoGlobal.questions[i].answers[3].image}" onclick="escolherAlternativa(${i},3)">
-                            ${conteudoGlobal.questions[i].answers[3].text}
-                        </div>
-                    </div>
+    for (n = 0; n < conteudoGlobal.questions[i].answers.length; n++) {
+
+        if (contadorAlternativa == 0) {
+            elemento.lastElementChild.innerHTML += `
+        <div class="faixaPergunta">
+            <div class="alternativa q${i} a0">
+                <img src="${conteudoGlobal.questions[i].answers[0].image}" onclick="escolherAlternativa(${i},0)">
+                ${conteudoGlobal.questions[i].answers[0].text}
             </div>
-    `;
+        </div>
+        `;
+            contadorAlternativa++;
+        }
 
-    elemento = document.querySelector(".q"+i+".a3");
-    elemento.scrollIntoView(false);
+        else if (contadorAlternativa == 1) {
+            elemento.lastElementChild.lastElementChild.innerHTML +=
+                `
+            <div class="alternativa q${i} a1">
+                    <img src="${conteudoGlobal.questions[i].answers[1].image}" onclick="escolherAlternativa(${i},1)">
+                    ${conteudoGlobal.questions[i].answers[1].text}
+            </div>            
+                `;
+            contadorAlternativa++;
+        }
 
+        else if (contadorAlternativa == 2) {
+            if(conteudoGlobal.questions[i].answers.length<3){
+                elemento.lastElementChild.innerHTML += `
+                <div class="faixaPergunta">
+                    <div class="alternativa q${i} a2 vazia">
+                    </div>
+                </div>
+                `;
+            }
+            else{
+            elemento.lastElementChild.innerHTML += `
+            <div class="faixaPergunta">
+                <div class="alternativa q${i} a2">
+                    <img src="${conteudoGlobal.questions[i].answers[2].image}" onclick="escolherAlternativa(${i},2)">
+                    ${conteudoGlobal.questions[i].answers[2].text}
+                </div>
+            </div>
+            `;
+        }
+        contadorAlternativa++;
+        }
 
+        else if (contadorAlternativa == 3) {
+
+            if(conteudoGlobal.questions[i].answers.length<4){
+                elemento.lastElementChild.lastElementChild.innerHTML += `
+                <div class="alternativa q${i} a3 vazia">
+                </div>
+                `;
+            }
+
+            else{
+
+            elemento.lastElementChild.lastElementChild.innerHTML += `
+                <div class="alternativa q${i} a3">
+                <img src="${conteudoGlobal.questions[i].answers[3].image}" onclick="escolherAlternativa(${i},3)">
+                ${conteudoGlobal.questions[i].answers[3].text}
+            </div>
+                `;
+            }
+            contadorAlternativa = 0;
+        }
+    }
+
+    elemento = document.querySelector(".q" + i + ".a1");
+    elemento.scrollIntoView();
     i++;
 }
 
@@ -188,12 +224,20 @@ function escolherAlternativa(questao, alternativa) {
         var a1 = document.querySelector(".a1.q" + questao);
         a1.classList.add("apagado");
         a1.classList.add("alternativaErrada");
-        var a2 = document.querySelector(".a2.q" + questao);
-        a2.classList.add("apagado");
-        a2.classList.add("alternativaErrada");
-        var a3 = document.querySelector(".a3.q" + questao);
-        a3.classList.add("apagado");
-        a3.classList.add("alternativaErrada");
+        if(conteudoGlobal.questions[questao].answers.length > 2){
+            var a2 = document.querySelector(".a2.q" + questao);
+            a2.classList.add("apagado");
+            a2.classList.add("alternativaErrada");
+        }
+
+        if(conteudoGlobal.questions[questao].answers.length >3){
+            var a3 = document.querySelector(".a3.q" + questao);
+            a3.classList.add("apagado");
+            a3.classList.add("alternativaErrada");
+
+        }
+        
+        
 
 
         var elemento = document.querySelector(".q" + questao + ".a" + alternativa);
@@ -221,7 +265,7 @@ function escolherAlternativa(questao, alternativa) {
         score = Math.floor(100 * (acertos / contador));
 
         setTimeout(exibirResultado, 500);
-        
+
 
 
     }
@@ -235,7 +279,7 @@ function exibirResultado() {
             nivel = conteudoGlobal.levels[m];
         }
     }
-    
+
 
     let elemento = document.querySelector(".containerQuizz");
     elemento.innerHTML += `
@@ -259,16 +303,16 @@ function exibirResultado() {
 
     elemento = document.querySelector(".voltar");
     elemento.scrollIntoView(false);
-    
+
 
 }
 
 
-function recarregar(){
-    window.location.reload();
+function recarregar() {
+    carregarQuizz(idGlobal);
 }
 
-function irHome(){
+function irHome() {
 
     const ocultar = document.querySelector(".tela2");
     ocultar.classList.add("off");

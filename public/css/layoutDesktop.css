@@ -146,7 +146,7 @@ body {
 
 .item {
     width: 32%;
-    height: auto;
+    height: 190px;
     /*background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%);*/
     border-radius: 5px;
     position: relative;
@@ -288,6 +288,7 @@ body {
 
 .alternativa {
     width: 47%;
+    min-height:200px;
     font-family: "Roboto", sans-serif;
     font-style: normal;
     font-weight: bold;
@@ -357,4 +358,8 @@ body {
 
 .apagado {
     opacity: 0.3;
+}
+
+.vazia {
+    background: white;
 }
