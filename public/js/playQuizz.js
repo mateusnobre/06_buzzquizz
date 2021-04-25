@@ -36,11 +36,80 @@ function quizz1(resposta) {
 
     resetar.innerHTML =
         `
+
+        <div class="tela1 off">
+            <div class="fundo">
+                <div class="containerGeral">
+                    <div class="blocoCriarQuizz">
+
+                        <h3>Você não criou nenhum<br>quizz ainda :(</h3>
+                        <div class="criarQuizz">Criar Quizz</div>
+
+                    </div>
+
+
+                    <div class="seusQuizzes">
+                        <div class="tituloSeusQuizzes">
+                            <h2>Seus Quizzes</h2>
+                            <ion-icon name="add-circle"></ion-icon>
+                        </div>
+                        <div class="faixa">
+                            <div class="item primeiro">
+                                <img src="imgs/potterhead.png">
+                                <h4>O quão Potterhead é você?</h4>
+                            </div>
+                            <div class="item segundo">
+                                <img src="imgs/preguica.png">
+                                <h4>O quanto você é de boas?</h4>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="todosQuizzes">
+                        <h2>Todos os Quizzes</h2>
+                        <div class="faixa">
+                            <div class="item primeiro">
+                                <img src="imgs/preguica.png">
+                                <h4>O quanto você é de boas?</h4>
+                            </div>
+                            <div class="item segundo">
+                                <img src="imgs/preguica.png">
+                                <h4>O quanto você é de boas?</h4>
+                            </div>
+                            <div class="item segundo">
+                                <img src="imgs/preguica.png">
+                                <h4>O quanto você é de boas?</h4>
+                            </div>
+                        </div>
+                        <div class="faixa">
+                            <div class="item primeiro">
+                                <img src="imgs/preguica.png">
+                                <h4>O quanto você é de boas?</h4>
+                            </div>
+                            <div class="item segundo">
+                                <img src="imgs/preguica.png">
+                                <h4>O quanto você é de boas?</h4>
+                            </div>
+                            <div class="item segundo">
+                                <img src="imgs/preguica.png">
+                                <h4>O quanto você é de boas?</h4>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     <div class="tela2">
+        <div class="fundo">
         <div class="tituloQuizz">
             <h2>${resposta.data.title}</h2>
         </div>
-        <div class="fundo">
             <div class="containerQuizz">
             <div class="perguntas">
             </div>
@@ -65,43 +134,51 @@ function quizz1(resposta) {
 
     }
 
-    alert(solucoes);
+        setTimeout(exibirPergunta, 500);
+  
 
-    for (let i = 0; i < numeroPerguntas; i++) {
+}
 
-        var elemento = document.querySelector(".perguntas");
+let i = 0;
+
+function exibirPergunta(){
+
+    var elemento = document.querySelector(".perguntas");
         elemento.innerHTML += `
     <div class="pergunta">
                     <div class="topoPergunta azul">
-                        <h3>${resposta.data.questions[i].title}</h3>
+                        <h3>${conteudoGlobal.questions[i].title}</h3>
                     </div>
                     <div class="faixaPergunta">
                         <div class="alternativa q${i} a0">
-                            <img src="${resposta.data.questions[i].answers[0].image}" onclick="escolherAlternativa(${i},0)">
-                            ${resposta.data.questions[i].answers[0].text}
+                            <img src="${conteudoGlobal.questions[i].answers[0].image}" onclick="escolherAlternativa(${i},0)">
+                            ${conteudoGlobal.questions[i].answers[0].text}
                         </div>
                         <div class="alternativa q${i} a1">
-                            <img src="${resposta.data.questions[i].answers[1].image}" onclick="escolherAlternativa(${i},1)">
-                            ${resposta.data.questions[i].answers[1].text}
+                            <img src="${conteudoGlobal.questions[i].answers[1].image}" onclick="escolherAlternativa(${i},1)">
+                            ${conteudoGlobal.questions[i].answers[1].text}
                         </div>
                     </div>
 
                     <div class="faixaPergunta">
                         <div class="alternativa q${i} a2">
-                            <img src="${resposta.data.questions[i].answers[2].image}" onclick="escolherAlternativa(${i},2)">
-                            ${resposta.data.questions[i].answers[2].text}
+                            <img src="${conteudoGlobal.questions[i].answers[2].image}" onclick="escolherAlternativa(${i},2)">
+                            ${conteudoGlobal.questions[i].answers[2].text}
                         </div>
                         <div class="alternativa q${i} a3">
-                            <img src="${resposta.data.questions[i].answers[3].image}" onclick="escolherAlternativa(${i},3)">
-                            ${resposta.data.questions[i].answers[3].text}
+                            <img src="${conteudoGlobal.questions[i].answers[3].image}" onclick="escolherAlternativa(${i},3)">
+                            ${conteudoGlobal.questions[i].answers[3].text}
                         </div>
                     </div>
             </div>
     `;
-    }
 
+    elemento = document.querySelector(".q"+i+".a3");
+    elemento.scrollIntoView(false);
+
+
+    i++;
 }
-
 
 function escolherAlternativa(questao, alternativa) {
     if (limitador[questao] == 0) {
@@ -135,12 +212,16 @@ function escolherAlternativa(questao, alternativa) {
     }
 
 
+    setTimeout(exibirPergunta, 500);
+
 
     let nivel = {};
 
     if (contador != 0 && contador == numeroPerguntas) {
         score = Math.floor(100 * (acertos / contador));
-        exibirResultado(score);
+
+        setTimeout(exibirResultado, 500);
+        
 
 
     }
@@ -148,13 +229,13 @@ function escolherAlternativa(questao, alternativa) {
 }
 
 
-function exibirResultado(score) {
+function exibirResultado() {
     for (let m = 0; m < conteudoGlobal.levels.length; m++) {
         if (score >= conteudoGlobal.levels[m].minValue) {
             nivel = conteudoGlobal.levels[m];
         }
     }
-    alert(nivel.title);
+    
 
     let elemento = document.querySelector(".containerQuizz");
     elemento.innerHTML += `
@@ -170,12 +251,34 @@ function exibirResultado(score) {
 
          </div>
 
-         <div class="reiniciarQuizz"><h5>Reiniciar Quizz</h5></div>
-        <div class="voltar"><h5>Voltar para home</h5></div>
+         <div class="reiniciarQuizz" onclick="recarregar()" ><h5>Reiniciar Quizz</h5></div>
+        <div class="voltar"  onclick="irHome()"><h5>Voltar para home</h5></div>
     
     `;
 
+
+    elemento = document.querySelector(".voltar");
+    elemento.scrollIntoView(false);
+    
+
 }
+
+
+function recarregar(){
+    window.location.reload();
+}
+
+function irHome(){
+
+    const ocultar = document.querySelector(".tela2");
+    ocultar.classList.add("off");
+
+    const mostrar = document.querySelector(".tela1");
+    mostrar.classList.remove("off");
+
+}
+
+
 
 
 
