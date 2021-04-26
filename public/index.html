@@ -32,7 +32,7 @@
                     </div>
 
 
-                    <div class="seusQuizzes off">
+                    <div class="seusQuizzes">
                         <div class="tituloSeusQuizzes">
                             <h2>Seus Quizzes</h2>
                             <ion-icon name="add-circle" onclick="createQuizz()"></ion-icon>
@@ -76,7 +76,6 @@
             <div class="defineLevels off">
             </div>
             <div class="quizzImage off">
-                <img src="../public/imgs/potterhead.png" alt="">
             </div>
             <div class="levelProgressionButton">
                 <button onclick="phaseProgression()">Prosseguir pra criar perguntas</button>
@@ -88,7 +87,7 @@
                 <button onclick="phaseProgression()">Finalizar Quizz</button>
             </div>
             <div class="accessQuizzButton off">
-                <button onclick="phaseProgression()">Acessar Quizz</button>
+                <button onclick="carregarQuizz(localStorage.getItem('ID'))">Acessar Quizz</button>
             </div>
             <div class="goHomeButton off">
                 <button onclick="sendQuizz()">Voltar pra home</button>
@@ -97,9 +96,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="js/quizCreation.js"></script>
     <script src="js/loadQuizzes.js"></script>
     <script src="js/playQuizz.js"></script>
+    <script src="js/quizCreation.js"></script>
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
 </body>
 

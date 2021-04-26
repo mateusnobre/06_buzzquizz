@@ -1,45 +1,64 @@
 function isValidHttpUrl(string) {
-  let url;
-  
-  try {
-    url = new URL(string);
-  } catch (_) {
-    return false;  
-  }
+    let url;
 
-  return url.protocol === "http:" || url.protocol === "https:";
+    try {
+        url = new URL(string);
+    } catch (_) {
+        return false;
+    }
+
+    return url.protocol === "http:" || url.protocol === "https:";
 }
 
-function isColor(strColor){
+function isColor(strColor) {
     const s = new Option().style;
     s.color = strColor;
     return s.color !== '';
 }
 
 function buildLevelTemplate(level) {
-    const levelTemplate = `<div class="level">
-    <div class="section">
-        Nível ${level}
-    </div>
-    <div class="quizzCreationInput">
-        <input type="text" name="" id="" placeholder="Título do nível">
-    </div>
-    <div class="quizzCreationInput">
-        <input type="text" name="" id="" placeholder="% de acerto mínima">
-    </div>
-    <div class="quizzCreationInput">
-        <input type="text" name="" id="" placeholder="URL da imagem do nível">
-    </div>
-    <div class="quizzCreationInput">
-        <input type="text" name="" id="" placeholder="Descrição do nível">
-    </div>    
-    </div>`;
+    const levelTemplate = `<div class="level off">
+                                <div class="section">
+                                    Nível ${level}
+                                </div>
+                                <div class="quizzCreationInput">
+                                    <input type="text" name="" id="" placeholder="Título do nível">
+                                </div>
+                                <div class="quizzCreationInput">
+                                    <input type="text" name="" id="" placeholder="% de acerto mínima">
+                                </div>
+                                <div class="quizzCreationInput">
+                                    <input type="text" name="" id="" placeholder="URL da imagem do nível">
+                                </div>
+                                <div class="quizzCreationInput">
+                                    <input type="text" name="" id="" placeholder="Descrição do nível">
+                                </div>    
+                            </div>
+                            <div class="levelEditBox">
+                                <div class="textBox">
+                                    Nível ${level}
+                                </div>
+                                <img src="../public/imgs/edit.svg" alt="Editar" onclick="showLevel(${level})">
+                            </div>    
+    `;
     return levelTemplate;
+}
+
+function showQuestion(questionN) {
+    defineQuestions.getElementsByClassName("question")[questionN - 1].classList.remove('off');
+    defineQuestions.getElementsByClassName("levelEditBox")[questionN - 1].classList.add('off');
+    return;
+}
+
+function showLevel(level) {
+    defineLevels.getElementsByClassName("level")[level - 1].classList.remove('off');
+    defineLevels.getElementsByClassName("levelEditBox")[level - 1].classList.add('off');
+    return;
 }
 
 function buildQuestionTemplate(questionNumber) {
     const questionTemplate = `
-            <div class="question">
+            <div class="question off">
                 <div class="section">
                     Pergunta ${questionNumber}
                 </div>
@@ -79,40 +98,45 @@ function buildQuestionTemplate(questionNumber) {
                 <div class="quizzCreationInput">
                     <input type="text" name="" id="" placeholder="URL da imagem 3">
                 </div>
+            </div>
+            <div class="levelEditBox">
+                <div class="textBox">
+                    Pergunta ${questionNumber}
+                </div>
+                <img src="../public/imgs/edit.svg" alt="Editar" onclick="showQuestion(${questionNumber})">
             </div>`;
     return questionTemplate
 }
 
 function fillAnswer(text, image, isCorrectAnswer) {
     var answerJSON = {
-        text: text,
-        image: image,
-        isCorrectAnswer: isCorrectAnswer
+        "text": text,
+        "image": image,
+        "isCorrectAnswer": isCorrectAnswer
     };
     return answerJSON
 }
 function fillQuestion(title, color, answers) {
     var questionJSON = {
-        title: title,
-        color: color,
-        answers: answers
+        "title": title,
+        "color": color,
+        "answers": answers
     };
     quizJSON.questions.push(questionJSON);
 }
 function fillLevel(title, image, text, minValue) {
     var levelJSON = {
-        title: title,
-        image: image,
-        text: text,
-        minValue: minValue
+        "title": title,
+        "image": image,
+        "text": text,
+        "minValue": minValue
     };
     quizJSON.levels.push(levelJSON);
 }
 function fillQuiz(title, image) {
     quizJSON.title = title;
     quizJSON.image = image;
-    console.log(quizJSON);
-} 
+ }
 
 var quizzTitle = '';
 var quizzImageURL = '';
@@ -121,10 +145,10 @@ var numberOfQuestions = 0;
 
 
 var quizJSON = {
-    title: "Título do quizz",
-    image: "https://http.cat/411.jpg",
-    questions: [],
-    levels: []
+    "title": "Título do quizz",
+    "image": "https://http.cat/411.jpg",
+    "questions": [],
+    "levels": []
 }
 
 var phaseTitles = document.getElementsByClassName('phaseTitle');
@@ -152,7 +176,7 @@ function phaseProgression() {
         defineQuizz.classList.add('off');
         quizzTitle = defineQuizzInputs[0].querySelector("input").value;
         quizzImageURL = defineQuizzInputs[1].querySelector("input").value;
-       
+
         numberOfQuestions = defineQuizzInputs[2].querySelector("input").value;
 
         numberOfLevels = defineQuizzInputs[3].querySelector("input").value;
@@ -173,12 +197,11 @@ function phaseProgression() {
             currentLevel = 1;
             alert('Seu quizz deve ter pelo menos 2 níveis!')
             document.location.reload();
-         }
+        }
         defineQuestions.classList.remove('off');
         for (let index = 1; index <= numberOfQuestions; index++) {
             defineQuestions.innerHTML += buildQuestionTemplate(index);
         }
-
     }
     else if (currentLevel == 2) {
         currentLevel += 1;
@@ -195,7 +218,6 @@ function phaseProgression() {
         var answers = [];
         for (let index = 0; index < questionsHTML.length; index++) {
             var questionInputs = questionsHTML[index].getElementsByTagName("input")
-            console.log(questionInputs);
             var questionTitle = questionInputs[0].value;
             var questionColor = questionInputs[1].value;
             var correctAnswerText = questionInputs[2].value;
@@ -269,13 +291,15 @@ function phaseProgression() {
         accessQuizzButton.classList.remove('off');
         goHomeButton.classList.remove('off');
         quizzImage.classList.remove('off');
-
+        quizzImage.innerHTML += `
+                <img src="${quizzImageURL}" alt="Imagem do Quiz">
+            `;
         var levels = defineLevels.getElementsByClassName('level');
         var minValues = [];
         for (let index = 0; index < levels.length; index++) {
             var levelInputs = levels[index].getElementsByTagName("input");
             var title = levelInputs[0].value;
-            var minValue = levelInputs[1].value;
+            var minValue = parseInt(levelInputs[1].value);
             var image = levelInputs[2].value;
 
             var text = levelInputs[3].value;
@@ -303,9 +327,11 @@ function phaseProgression() {
             document.location.reload();
         }
 
-        fillQuiz(quizzImage, quizzImageURL);
+        fillQuiz(quizzTitle, quizzImageURL);
         quizPost = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes', quizJSON);
         quizPost.then(storeQuizID);
+        console.log(quizJSON);
+        console.log(quizPost);
         quizJSON.questions = [];
         quizJSON.levels = [];
     }
@@ -321,5 +347,10 @@ function sendQuizz() {
     tela1.classList.remove('off');
     seusQuizzes.classList.remove('off');
     quizCreation.classList.add('off');
+    window.location.reload();
     blocoCriarQuizz.style.display = "None";
+}
+
+function storeQuizID() {
+    localStorage.setItem("ID", quizPost.id);
 }
