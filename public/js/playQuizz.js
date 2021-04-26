@@ -11,10 +11,19 @@ let acertos = 0;
 let contador = 0;
 let numeroPerguntas = 0;
 let score = 0;
+let numeroAlternativas = 0;
 
 var conteudoGlobal = [];
 
 function quizz(resposta) {
+    limitador = [];
+     solucoes = [];
+     acertos = 0;
+    contador = 0;
+    numeroPerguntas = 0;
+    
+    score = 0;
+
     console.log(resposta.data);
 
     conteudoGlobal = resposta.data;
@@ -94,6 +103,8 @@ function quizz(resposta) {
     <div class="tela2">
         <div class="fundo">
         <div class="tituloQuizz">
+        <div class="pelicula"></div>
+            <img src=${resposta.data.image}>
             <h2>${resposta.data.title}</h2>
         </div>
             <div class="containerQuizz">
@@ -113,7 +124,7 @@ function quizz(resposta) {
     for (let j = 0; j < numeroPerguntas; j++) {
         limitador.push(0);
         
-        let numeroAlternativas = resposta.data.questions[j].answers.length;
+        numeroAlternativas = resposta.data.questions[j].answers.length;
 
 
         for (let k = 0; k < numeroAlternativas; k++) {
@@ -237,8 +248,6 @@ function escolherAlternativa(questao, alternativa) {
 
         }
         
-        
-
 
         var elemento = document.querySelector(".q" + questao + ".a" + alternativa);
         elemento.classList.remove("apagado");
@@ -255,19 +264,15 @@ function escolherAlternativa(questao, alternativa) {
         contador++;
     }
 
-
-    setTimeout(exibirPergunta, 500);
-
-
     let nivel = {};
 
     if (contador != 0 && contador == numeroPerguntas) {
         score = Math.floor(100 * (acertos / contador));
-
-        setTimeout(exibirResultado, 500);
-
-
-
+        i=0;
+        setTimeout(exibirResultado, 1000);
+    }
+    else{
+        setTimeout(exibirPergunta, 1000);
     }
 
 }
@@ -309,17 +314,11 @@ function exibirResultado() {
 
 
 function recarregar() {
-    carregarQuizz(idGlobal);
+    carregarQuizz(conteudoGlobal.id);
 }
 
 function irHome() {
-
-    const ocultar = document.querySelector(".tela2");
-    ocultar.classList.add("off");
-
-    const mostrar = document.querySelector(".tela1");
-    mostrar.classList.remove("off");
-
+    window.location.reload();
 }
 
 
