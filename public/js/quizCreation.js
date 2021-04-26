@@ -1,4 +1,4 @@
-function buildLevelTemplate(level){
+function buildLevelTemplate(level) {
     const levelTemplate = `<div class="level">
     <div class="section">
         Nível ${level}
@@ -16,7 +16,7 @@ function buildLevelTemplate(level){
     return levelTemplate;
 }
 
-function buildQuestionTemplate(questionNumber){
+function buildQuestionTemplate(questionNumber) {
     const questionTemplate = `
             <div class="question">
                 <div class="section">
@@ -64,13 +64,13 @@ function buildQuestionTemplate(questionNumber){
 
 
 
-function fillAnswer(question, text, image, isCorrectAnswer){
+function fillAnswer(question, text, image, isCorrectAnswer) {
     answerJSON.text = text;
     answerJSON.image = image;
     answerJSON.isCorrectAnswer = isCorrectAnswer;
     question.answers.append(answerJSON)
 }
-function fillQuestion(quiz, title, text, color, answers){
+function fillQuestion(quiz, title, text, color, answers) {
     questionJSON.title = title;
     questionJSON.text = text;
     questionJSON.color = color;
@@ -79,14 +79,14 @@ function fillQuestion(quiz, title, text, color, answers){
     }
     quiz.questions.append(questionJSON);
 }
-function fillLevel(quiz, title, image, text, minValue){
+function fillLevel(quiz, title, image, text, minValue) {
     levelJSON.title = title;
     levelJSON.image = image;
-    levelJSON.text = text; 
+    levelJSON.text = text;
     levelJSON.minValue = minValue;
     quiz.levels.append(levelJSON)
 }
-function fillQuiz(title, image, questions, levels){
+function fillQuiz(title, image, questions, levels) {
     quizJSON.title = title;
     quizJSON.image = image;
     for (const question in questions) {
@@ -95,15 +95,15 @@ function fillQuiz(title, image, questions, levels){
     for (const level in levels) {
         fillLevel(quiz, title, image, text, minValue);
     }
-}let quizzTitle = '';
+} let quizzTitle = '';
 let quizzImageURL = '';
 let numberOfLevels = 0;
 let numberOfQuestions = 0;
 let answerJSON = {
-            text: "Texto da resposta 1",
-            image: "https://http.cat/411.jpg",
-            isCorrectAnswer: true
-        }
+    text: "Texto da resposta 1",
+    image: "https://http.cat/411.jpg",
+    isCorrectAnswer: true
+}
 let questionJSON = {
     title: "Título da pergunta 1",
     color: "#123456",
@@ -116,24 +116,27 @@ let levelJSON = {
     minValue: 0
 };
 let quizJSON = {
-	title: "Título do quizz",
-	image: "https://http.cat/411.jpg",
-	questions: [],
-	levels: []
-} 
+    title: "Título do quizz",
+    image: "https://http.cat/411.jpg",
+    questions: [],
+    levels: []
+}
 let phaseTitles = document.getElementsByClassName('phaseTitle');
-let defineQuizz  = document.querySelector('.defineQuizz');
+let defineQuizz = document.querySelector('.defineQuizz');
 defineQuizzInputs = defineQuizz.getElementsByClassName("quizzCreationInput");
 let levelProgressionButtons = document.getElementsByClassName('levelProgressionButton');
-let defineQuestions  = document.querySelector('.defineQuestions');
+let defineQuestions = document.querySelector('.defineQuestions');
 let defineLevels = document.querySelector('.defineLevels');
 let currentLevel = 1;
 let accessQuizzButton = document.querySelector('.accessQuizzButton');
 let goHomeButton = document.querySelector('.goHomeButton');
 let quizzImage = document.querySelector('.quizzImage');
+let criarQuizz = document.querySelector(".blocoCriarQuizz");
+let quizCreation = document.querySelector(".quizCreation");
+let tela1 = document.querySelector(".tela1");
 
 function phaseProgression() {
-    if (currentLevel == 1){
+    if (currentLevel == 1) {
         currentLevel += 1;
         phaseTitles[0].classList.add('off');
         phaseTitles[1].classList.remove('off');
@@ -144,24 +147,24 @@ function phaseProgression() {
         quizzImageURL = defineQuizzInputs[1].querySelector("input").value;
         numberOfQuestions = defineQuizzInputs[2].querySelector("input").value;
         numberOfLevels = defineQuizzInputs[3].querySelector("input").value;
-        defineQuestions.classList.remove('off');    
+        defineQuestions.classList.remove('off');
         for (let index = 1; index <= numberOfQuestions; index++) {
             defineQuestions.innerHTML += buildQuestionTemplate(index);
         }
         questions = defineQuestions.getElementsByClassName('question');
-        for (const question in questions) {
-            questionInputs = question.getElementsByClassName("input")
+        for (let index = 0; index < questions.length; index++) {
+            questionInputs = question[i].getElementsByClassName("input")
             questionTitle = questionInputs[0].value;
             questionColor = questionInputs[1].value;
 
             correctAnswerText = questionInputs[2].value;
             correctAnswerImage = questionInputs[3].value;
             fillAnswer(questionJSON, correctAnswerText, correctAnswerImage, true);
-            
+
             let AnswerText = questionInputs[4].value;
             let AnswerImage = questionInputs[5].value;
             fillAnswer(questionJSON, AnswerText, AnswerImage, false);
-            
+
             if (questionInputs.length > 5) {
                 AnswerText = questionInputs[6].value;
                 AnswerImage = questionInputs[7].value;
@@ -174,11 +177,11 @@ function phaseProgression() {
             }
             console.log(questionJSON);
             fillQuestion(quizJSON, questionTitle, questionText, questionColor, answers);
-         }
+        }
 
     }
-    else if (currentLevel == 2){
-        currentLevel +=1;
+    else if (currentLevel == 2) {
+        currentLevel += 1;
         phaseTitles[1].classList.add('off');
         phaseTitles[2].classList.remove('off');
         levelProgressionButtons[1].classList.add('off');
@@ -189,8 +192,8 @@ function phaseProgression() {
         }
         defineLevels.classList.remove("off");
     }
-    else if (currentLevel == 3){
-        currentLevel +=1;
+    else if (currentLevel == 3) {
+        currentLevel += 1;
         phaseTitles[2].classList.add('off');
         phaseTitles[3].classList.remove('off');
         levelProgressionButtons[2].classList.add('off');
@@ -201,3 +204,13 @@ function phaseProgression() {
     }
 }
 
+function createQuizz() {
+    tela1.classList.add('off');
+    quizCreation.classList.remove('off');
+}
+
+function sendQuizz() {
+    tela1.classList.remove('off');
+    quizCreation.classList.add('off');
+    criarQuizz.classList.add('off');
+}
