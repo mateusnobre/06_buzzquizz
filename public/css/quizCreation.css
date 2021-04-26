@@ -78,6 +78,7 @@
     padding-left: 17px;
     font-size: 20px;
     margin-top: 28px;
+    margin-bottom: 17px;
     text-align: left;
 }
 
@@ -121,12 +122,14 @@
     border: 0;
     box-sizing: border-box;
     border-radius: 5px;
-    font-style: italic;
-    color: #BABABA;
     text-align: left;
     line-height: 46px;
 }
 
+.quizzCreationInput input::placeholder{
+    font-style: italic;
+    color: #BABABA;
+}
 
 .levelProgressionButton button{
     font-family: "Roboto", sans-serif;
